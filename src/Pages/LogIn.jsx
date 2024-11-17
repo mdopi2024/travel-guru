@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { FaFacebook, FaGoogle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthProvider/AuthProvider';
 
 const LogIn = () => {
-    const {logInForm,registerGoogle}=useContext(AuthContext)
+    const {logInForm,registerGoogle,logInFacebook,resetPass}=useContext(AuthContext)
     const navigate= useNavigate()
+    const emailRef = useRef()
 
     const handleLogIn=(e)=>{
         e.preventDefault()
@@ -32,6 +33,18 @@ const LogIn = () => {
             console.log(err)
         })
     }
+
+    const handleFacebook=()=>{
+        logInFacebook()
+        .then(res=>{
+            console.log(res)
+            navigate('/')
+        }).catch(error=>console.log(error.code))
+    }
+
+    const restPassword=()=>{
+      console.log(emailRef.target.email.value)
+    }
     return (
         <div className='flex justify-center items-center flex-col pb-6'>
             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
@@ -40,7 +53,7 @@ const LogIn = () => {
                         <label className="label">
                             <span className="label-text">Email</span>
                         </label>
-                        <input name='email' type="email" placeholder="email" className="input input-bordered" required />
+                        <input ref={emailRef} name='email' type="email" placeholder="email" className="input input-bordered" required />
                     </div>
                     <div className="form-control">
                         <label className="label">
@@ -57,7 +70,7 @@ const LogIn = () => {
                             </div>
                             <div>
                                 <label className="label">
-                                    <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                                    <button onClick={restPassword}>forget password</button>
                                 </label>
                             </div>
                         </div>
@@ -71,7 +84,7 @@ const LogIn = () => {
             <div className='flex justify-center items-center flex-col space-y-3 mt-1'>
                 <div className='divider'>or</div>
 
-                <button className='flex items-center gap-4 font-semibold border-2 py-1 px-4 rounded-lg'> <span><FaFacebook className='text-3xl ' /></span>Login With Facebook</button>
+                <button onClick={handleFacebook} className='flex items-center gap-4 font-semibold border-2 py-1 px-4 rounded-lg'> <span><FaFacebook className='text-3xl ' /></span>Login With Facebook</button>
                 <button onClick={handleGoogleLogIn} className='flex items-center gap-4 font-semibold border-2 py-2 px-4 rounded-lg'> <span><FaGoogle className='text-3xl ' /></span>Login With Google</button>
             </div>
         </div>

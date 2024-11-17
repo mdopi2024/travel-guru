@@ -5,7 +5,7 @@ import { AuthContext } from '../AuthProvider/AuthProvider';
 
 
 const Register = () => {
-    const { registerGoogle,registerForm } = useContext(AuthContext)
+    const { registerGoogle,registerForm,logInFacebook } = useContext(AuthContext)
     const navigate = useNavigate()
 
     const handlGoogle =()=>{
@@ -17,7 +17,9 @@ const Register = () => {
         }).catch(error=>{
             console.log(error)
         })
+        
     }
+    
 
 
     const handlForm =(e)=>{
@@ -39,6 +41,14 @@ const Register = () => {
         })
         
     }
+
+    const handleFacebook=()=>{
+        logInFacebook()
+        .then(res=>{
+            console.log(res)
+            navigate('/')
+        }).catch(error=>console.log(error.code))}
+  
 
     return (
         <div className='flex justify-center items-center flex-col pb-6'>
@@ -92,7 +102,7 @@ const Register = () => {
             <div className='flex justify-center items-center flex-col space-y-3 mt-1'>
                 <div className='divider'>or</div>
 
-                <button className='flex items-center gap-4 font-semibold border-2 py-1 px-4 rounded-lg'> <span><FaFacebook className='text-3xl ' /></span>Continue With Facebook</button>
+                <button onClick={handleFacebook} className='flex items-center gap-4 font-semibold border-2 py-1 px-4 rounded-lg'> <span><FaFacebook className='text-3xl ' /></span>Continue With Facebook</button>
                 <button onClick={handlGoogle} className='flex items-center gap-4 font-semibold border-2 py-2 px-4 rounded-lg'> <span><FaGoogle className='text-3xl ' /></span>Continue With Google</button>
             </div>
         </div>
